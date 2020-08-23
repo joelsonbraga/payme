@@ -1,0 +1,25 @@
+name: PHP Unit
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Run automated tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checking out the project..."
+        uses: actions/checkout@v1
+      - name: "Building the Docker Image..."
+        run: make build
+      - name: "Bringing the image up..."
+        run: |
+          docker run --rm --interactive --volume $PWD:/app composer install
+          sudo chmod -R 777 storage
+          sudo chmod -R 777 bootstrap/cache
+          make up
+      - name: "Running tests..."
+        run: |
+          make testAction
+        

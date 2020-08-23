@@ -1,0 +1,65 @@
+version: '2'
+services:
+    nginx:
+        image: nginx:alpine
+        container_name: still-delivery-back-nginx
+        restart: always
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www/html/
+            - ./.devops/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        tty: true
+        links:
+            - php
+        networks:
+            - still-delivery-back
+    php:
+        container_name: still-delivery-back-php
+        image: php:7.4-fpm-alpine
+        user: "${uid}:${gid}"
+        build: ./.devops/fpm
+        environment:
+            APP_NAME: still-delivery-back
+            APP_ENV: local
+            APP_KEY: base64:rZkvdPk8OVsPQm//v1wiTnoomHPyqBwEFtj2AsuwHHM=
+            APP_DEBUG: "true"
+            APP_URL: http://still-delivery-back.local
+            PSYSH_CONFIG: /var/www/html/.devops/psysh/config.php
+            DB_CONNECTION: pgsql
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_DATABASE: stilldelivery
+            DB_USERNAME: stilldelivery
+            DB_PASSWORD: 12345
+
+        volumes:
+            - .:/var/www/html/
+            - ./.devops/fpm/php.ini:/usr/local/etc/php/php.ini
+            - ./.devops/psysh:/var/www/html/.devops/psysh
+        links:
+            - postgres
+        networks:
+            - still-delivery-back
+
+    postgres:
+        image: postgres
+        container_name: still-delivery-back-postgres
+        ports:
+            - "15432:5432"
+        volumes:
+            - still-delivery-back-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: stilldelivery
+            POSTGRES_PASSWORD: 12345
+            POSTGRES_DB: stilldelivery
+        networks:
+            - still-delivery-back
+
+networks:
+    still-delivery-back:
+        driver: bridge
+
+volumes:
+    still-delivery-back-postgres:
+        driver: local
