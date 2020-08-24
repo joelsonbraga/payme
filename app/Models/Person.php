@@ -44,17 +44,17 @@ class Person extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function origins()
+    public function payers()
     {
-        return $this->hasMany(WalletTransaction::class, 'origin');
+        return $this->hasMany(WalletTransaction::class, 'payer');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function destinies()
+    public function payees()
     {
-        return $this->hasMany(WalletTransaction::class, 'destiny');
+        return $this->hasMany(WalletTransaction::class, 'payee');
     }
 
     /**

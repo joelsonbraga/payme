@@ -9,6 +9,6 @@ class PersonNotFoundException extends BaseException
 {
     public function __construct(string $message, $code = 404, Throwable $previous = null)
     {
-        parent::__construct(__('Person not found.'  . $message), $code, $previous);
+        parent::__construct(__($message ?? 'Person not found.'), $code??404, $previous);
     }
 }

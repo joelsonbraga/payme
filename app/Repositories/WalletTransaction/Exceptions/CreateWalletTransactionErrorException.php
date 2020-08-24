@@ -13,12 +13,12 @@ class CreateWalletTransactionErrorException extends BaseException
 {
     /**
      * CreateWalletTransactionErrorException constructor.
-     * @param string $message
+     * @param string|null $message
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(string $message, int $code = 500, Throwable $previous = null)
+    public function __construct(?string $message = null, int $code = 500, Throwable $previous = null)
     {
-        parent::__construct(__('Unable to create WalletTransaction.'  . $message), $code, $previous);
+        parent::__construct($message??__('Unable to create WalletTransaction.'), $code, $previous);
     }
 }

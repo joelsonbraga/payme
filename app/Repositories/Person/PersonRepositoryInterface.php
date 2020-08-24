@@ -35,7 +35,19 @@ interface PersonRepositoryInterface
      * @param string $uuid
      * @return Person
      */
-    public function findById(string $uuid): Person;
+    public function findByUuid(string $uuid): Person;
+
+    /**
+     * @param int $id
+     * @return Person
+     */
+    public function findByid(int $id): Person;
+
+    /**
+     * @param string $document
+     * @return Person
+     */
+    public function findByDocument(string $document): Person;
 
     /**
      * @param PersonEntity|null $personEntity

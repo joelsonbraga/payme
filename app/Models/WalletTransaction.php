@@ -20,16 +20,15 @@ class WalletTransaction extends Model
     /**
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'wallet_transactions';
     /**
      * @var string[]
      */
     protected $fillable = [
         'uuid',
-        'origin',
-        'destiny',
+        'payer',
+        'payee',
         'type',
-        'status',
         'value',
     ];
     /**
@@ -42,14 +41,14 @@ class WalletTransaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function originPerson() {
-        return $this->belongsTo(Person::class, 'origin');
+    public function payerPerson() {
+        return $this->belongsTo(Person::class, 'payer');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function destinyPerson() {
-        return $this->belongsTo(Person::class, 'destiny');
+    public function payeePerson() {
+        return $this->belongsTo(Person::class, 'payee');
     }
 }

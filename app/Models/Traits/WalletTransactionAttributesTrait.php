@@ -21,7 +21,7 @@ trait WalletTransactionAttributesTrait
     /**
      * @param string|double $value
      */
-    public function setValue($value)
+    public function setValueAttribute($value)
     {
         $this->attributes['value'] = $this->typeFormatNumber($value);
     }

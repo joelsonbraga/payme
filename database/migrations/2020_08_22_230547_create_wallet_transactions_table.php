@@ -16,16 +16,17 @@ class CreateWalletTransactionsTable extends Migration
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->unique();
             $table->uuid('uuid')->unique();
-            $table->integer('origin');
-            $table->integer('destiny');
+            $table->integer('payer');
+            $table->integer('payee');
             $table->enum('type', ['credit', 'debit'])->nullable();
-            $table->enum('status',['pending', 'success', 'error'])->default('pending');
             $table->double('value');
 
-            $table->index('origin');
-            $table->index('destiny');
+            $table->index('payer');
+            $table->index('payee');
             $table->index('type');
-            $table->index('status');
+
+            $table->foreign('payer')->references('id')->on('persons');
+            $table->foreign('payee')->references('id')->on('persons');
 
             $table->timestamps();
             $table->softDeletes();

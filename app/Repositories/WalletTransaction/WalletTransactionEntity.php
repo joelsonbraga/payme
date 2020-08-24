@@ -20,19 +20,15 @@ class WalletTransactionEntity
     /**
      * @var
      */
-    private $origin;
+    private $payer;
     /**
      * @var
      */
-    private $destiny;
+    private $payee;
     /**
      * @var
      */
     private $type;
-    /**
-     * @var
-     */
-    private $status;
     /**
      * @var
      */
@@ -46,10 +42,9 @@ class WalletTransactionEntity
 	{
 		$this->setId($mixedData['id'] ?? null);
 		$this->setUuid($mixedData['uuid'] ?? null);
-		$this->setOrigin($mixedData['origin'] ?? null);
-		$this->setDestiny($mixedData['destiny'] ?? null);
+		$this->setPayer($mixedData['payer'] ?? null);
+		$this->setPayee($mixedData['payee'] ?? null);
 		$this->setType($mixedData['type'] ?? null);
-		$this->setStatus($mixedData['status'] ?? null);
 		$this->setValue($mixedData['value'] ?? null);
 	}
 
@@ -61,10 +56,9 @@ class WalletTransactionEntity
 		return [
 			'id' => $this->getId(),
 			'uuid' => $this->getUuid(),
-			'origin' => $this->getOrigin(),
-			'destiny' => $this->getDestiny(),
+			'payer' => $this->getPayer(),
+			'payee' => $this->getPayee(),
 			'type' => $this->getType(),
-			'status' => $this->getStatus(),
 			'value' => $this->getValue(),
 		];
 	}
@@ -104,33 +98,33 @@ class WalletTransactionEntity
     /**
      * @return string|null
      */
-    public function getOrigin(): ?string
+    public function getPayer(): ?string
 	{
-		return $this->origin;
+		return $this->payer;
 	}
 
     /**
-     * @param string|null $origin
+     * @param string|null $payer
      */
-    public function setOrigin(?string $origin): void
+    public function setPayer(?string $payer): void
 	{
-		$this->origin = $origin;
+		$this->payer = $payer;
 	}
 
     /**
      * @return string|null
      */
-    public function getDestiny(): ?string
+    public function getPayee(): ?string
 	{
-		return $this->destiny;
+		return $this->payee;
 	}
 
     /**
-     * @param string|null $destiny
+     * @param string|null $payee
      */
-    public function setDestiny(?string $destiny): void
+    public function setPayee(?string $payee): void
 	{
-		$this->destiny = $destiny;
+		$this->payee = $payee;
 	}
 
     /**
@@ -147,22 +141,6 @@ class WalletTransactionEntity
     public function setType(?string $type): void
 	{
 		$this->type = $type;
-	}
-
-    /**
-     * @return string|null
-     */
-    public function getStatus(): ?string
-	{
-		return $this->status;
-	}
-
-    /**
-     * @param string|null $status
-     */
-    public function setStatus(?string $status): void
-	{
-		$this->status = $status;
 	}
 
     /**

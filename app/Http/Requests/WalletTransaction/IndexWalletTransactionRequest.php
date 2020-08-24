@@ -3,6 +3,7 @@
 namespace App\Http\Requests\WalletTransaction;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexWalletTransactionRequest extends FormRequest
 {
@@ -15,34 +16,14 @@ class IndexWalletTransactionRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'origin' => [
-				'required',
-			],
-			'destiny' => [
-				'required',
+			'payee' => [
+				'nullable',
 			],
 			'type' => [
-				'required',
-			],
-			'status' => [
-				'required',
-			],
-			'value' => [
-				'required',
+				'nullable',
+                Rule::in(['credit', 'debit']),
 			],
 		];
 	}
-
-	public function messages()
-	{
-		return [
-			'origin.required' => __('A origin is required.'),
-			'destiny.required' => __('A destiny is required.'),
-			'type.required' => __('A type is required.'),
-			'status.required' => __('A status is required.'),
-			'value.required' => __('A value is required.'),
-		];
-	}
-
 }
 

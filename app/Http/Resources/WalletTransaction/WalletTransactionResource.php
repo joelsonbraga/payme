@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\WalletTransaction;
 
+use App\Http\Resources\Person\PersonResource;
 use Illuminate\Http\Resources\Json\JsonResource;;
 
 class WalletTransactionResource extends JsonResource
@@ -11,10 +12,9 @@ class WalletTransactionResource extends JsonResource
 		return [
 			'id' => $this->id,
 			'uuid' => $this->uuid,
-			'origin' => $this->origin,
-			'destiny' => $this->destiny,
+			'payer' => new PersonResource($this->payerPerson),
+			'payee' => new PersonResource($this->payeePerson),
 			'type' => $this->type,
-			'status' => $this->status,
 			'value' => $this->value,
 		];
 	}

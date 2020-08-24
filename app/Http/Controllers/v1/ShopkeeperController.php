@@ -97,7 +97,7 @@ class ShopkeeperController extends Controller
     public function show(string $uuid)
     {
         try {
-            $person = $this->personRepository->findById($uuid);
+            $person = $this->personRepository->findByUuid($uuid);
 
             return response()->json(new PersonResource($person));
         } catch (PersonNotFoundException $e) {
@@ -136,7 +136,7 @@ class ShopkeeperController extends Controller
     public function destroy(string $uuid)
     {
         try {
-            $person = $this->personRepository->findById($uuid);
+            $person = $this->personRepository->findByUuid($uuid);
             $user   = $this->userRepository->findByPersonId($person->id);
 
             $this->personRepository->delete($uuid);

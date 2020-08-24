@@ -6,10 +6,10 @@ namespace App\Repositories\WalletTransaction;
 use App\Models\WalletTransaction;
 use App\Repositories\WalletTransaction\Exceptions\WalletTransactionNotFoundException;
 use App\Repositories\WalletTransaction\Exceptions\CreateWalletTransactionErrorException;
-use App\Repositories\WalletTransaction\Exceptions\DeleteWalletTransactionErrorException;
-use App\Repositories\WalletTransaction\Exceptions\UpdateWalletTransactionErrorException;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 /**
@@ -45,54 +45,25 @@ class WalletTransactionRepository implements WalletTransactionRepositoryInterfac
     public function create(WalletTransactionEntity $walletTransactionEntity): WalletTransaction
     {
         try {
-            $this->walletTransaction->origin = $walletTransactionEntity->getOrigin();
-            $this->walletTransaction->destiny = $walletTransactionEntity->getDestiny();
-            $this->walletTransaction->type = $walletTransactionEntity->getType();
-            $this->walletTransaction->status = $walletTransactionEntity->getStatus();
+            $this->walletTransaction->payer = $walletTransactionEntity->getPayer();
+            $this->walletTransaction->payee = $walletTransactionEntity->getPayee();
+            $this->walletTransaction->type  = $walletTransactionEntity->getType();
             $this->walletTransaction->value = $walletTransactionEntity->getValue();
 
-            $this->walletTransaction->save();
+            $walletTransaction = DB::table('wallet_transactions')
+                ->insertGetId([
+                    'uuid' => Str::uuid()->toString(),
+                    'payer' => $this->walletTransaction->payer,
+                    'payee' => $this->walletTransaction->payee,
+                    'type' => $this->walletTransaction->type,
+                    'value' => $this->walletTransaction->value,
+                    'created_at' => now(),
+                ]);
+
+            return $this->walletTransaction->find($walletTransaction);
+
         } catch (QueryException | \Throwable $e) {
             throw new CreateWalletTransactionErrorException($e->getMessage(), 500);
-        }
-
-        return $this->walletTransaction;
-    }
-
-    /**
-     * @param WalletTransactionEntity $walletTransactionEntity
-     * @return WalletTransaction
-     * @throws UpdateWalletTransactionErrorException
-     */
-    public function update(WalletTransactionEntity $walletTransactionEntity): WalletTransaction
-    {
-        try {
-            $walletTransaction = $this->findById($walletTransactionEntity->getUuid());
-
-            $walletTransaction->origin = $walletTransactionEntity->getOrigin();
-            $walletTransaction->destiny = $walletTransactionEntity->getDestiny();
-            $walletTransaction->type = $walletTransactionEntity->getType();
-            $walletTransaction->status = $walletTransactionEntity->getStatus();
-            $walletTransaction->value = $walletTransactionEntity->getValue();
-            $walletTransaction->save();
-        } catch (QueryException | \Throwable $e) {
-            throw new UpdateWalletTransactionErrorException($e->getMessage(), 500);
-        }
-
-        return $walletTransaction;
-    }
-
-    /**
-     * @param string $uuid
-     * @return bool
-     * @throws DeleteWalletTransactionErrorException
-     */
-    public function delete(string $uuid): bool
-    {
-        try {
-            return $this->walletTransaction->where('uuid', $uuid)->first()->delete();
-        } catch (QueryException | \Throwable $e) {
-            throw new DeleteWalletTransactionErrorException($e->getMessage(), 500);
         }
     }
 
@@ -122,23 +93,14 @@ class WalletTransactionRepository implements WalletTransactionRepositoryInterfac
         try {
             $walletTransaction =  $this->walletTransaction
                 ->where(function($query) use ($walletTransactionEntity) {
-                    if (!is_null($walletTransactionEntity->getUuid())) {
-                        $query->where('uuid', $walletTransactionEntity->getUuid());
+                    if (!is_null($walletTransactionEntity->getPayer())) {
+                        $query->where('payer', $walletTransactionEntity->getPayer());
                     }
-                    if (!is_null($walletTransactionEntity->getOrigin())) {
-                        $query->where('origin', $walletTransactionEntity->getOrigin());
-                    }
-                    if (!is_null($walletTransactionEntity->getDestiny())) {
-                        $query->where('destiny', $walletTransactionEntity->getDestiny());
+                    if (!is_null($walletTransactionEntity->getPayee())) {
+                        $query->where('payee', $walletTransactionEntity->getPayee());
                     }
                     if (!is_null($walletTransactionEntity->getType())) {
                         $query->where('type', $walletTransactionEntity->getType());
-                    }
-                    if (!is_null($walletTransactionEntity->getStatus())) {
-                        $query->where('status', $walletTransactionEntity->getStatus());
-                    }
-                    if (!is_null($walletTransactionEntity->getValue())) {
-                        $query->where('value', $walletTransactionEntity->getValue());
                     }
                 })
                 ->orderBy($sortBy, $orientation)

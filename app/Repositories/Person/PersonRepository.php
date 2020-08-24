@@ -68,7 +68,7 @@ class PersonRepository implements PersonRepositoryInterface
     {
         try {
 
-            $person = $this->findById($personEntity->getUuid());
+            $person = $this->findByUuid($personEntity->getUuid());
 
             $person->type        = $personEntity->getType();
             $person->type_document = $personEntity->getTypeDocument();
@@ -103,10 +103,38 @@ class PersonRepository implements PersonRepositoryInterface
      * @param string $uuid
      * @return Person
      */
-    public function findById(string $uuid): Person
+    public function findByUuid(string $uuid): Person
     {
         try {
             return $this->person->where('uuid', $uuid)->first();
+        } catch (QueryException | \Throwable $e) {
+            throw new PersonNotFoundException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return Person
+     * @throws PersonNotFoundException
+     */
+    public function findByid(int $id): Person
+    {
+        try {
+            return $this->person->find($id);
+        } catch (QueryException | \Throwable $e) {
+            throw new PersonNotFoundException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $document
+     * @return Person
+     * @throws PersonNotFoundException
+     */
+    public function findByDocument(string $document): Person
+    {
+        try {
+            return $this->person->where('document', $document)->first();
         } catch (QueryException | \Throwable $e) {
             throw new PersonNotFoundException($e->getMessage());
         }
