@@ -37,6 +37,12 @@ interface UserRepositoryInterface
     public function findById(string $uuid): User;
 
     /**
+     * @param int $person_id
+     * @return User
+     */
+    public function findByPersonId(int $person_id): User;
+
+    /**
      * @param UserEntity|null $userEntity
      * @param string $sortBy
      * @param string $orientation

@@ -107,7 +107,7 @@ class WalletTransactionController  extends Controller
     public function destroy(string $uuid)
 	{
 		try {
-			$walletTransaction = $this->walletTransactionRepository->delete($uuid);
+			$this->walletTransactionRepository->delete($uuid);
 			$response = [
 				'success' => [
 				'message' => __('walletTransaction was successfully excluded.'),

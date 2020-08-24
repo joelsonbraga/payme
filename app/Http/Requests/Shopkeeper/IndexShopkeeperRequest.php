@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Person;
+namespace App\Http\Requests\Shopkeeper;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-
-class IndexPersonRequest extends FormRequest
+/**
+ * Class StoreContractServiceRequest
+ * @package App\Http\Requests\ContractService
+ */
+class IndexShopkeeperRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,32 +29,13 @@ class IndexPersonRequest extends FormRequest
     public function rules()
     {
         return [
-            'person_id' => [
-                'nullable',
-            ],
-            'city_id' => [
-                'nullable',
-            ],
-            'contract_service_id' => [
-                'nullable',
-            ],
             'type_document' => [
                 'nullable',
-                Rule::in(['cpf', 'cnpj', 'cnh', 'rg', 'other']),
+                Rule::in(['cnpj']),
             ],
             'type' => [
-                'nullable',
-                Rule::in([
-                    'master',
-                    'admin',
-                    'shopper',
-                    'customer',
-                    'conductor',
-                    'supermarket_chain',
-                    'supermarket',
-                    'collaborator',
-                    'partner',
-                ]),
+                'required',
+                Rule::in(['shopkeeper']),
             ],
             'document' => [
                 'nullable',
@@ -65,7 +49,4 @@ class IndexPersonRequest extends FormRequest
             ],
         ];
     }
-
-
-
 }

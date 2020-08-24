@@ -44,14 +44,4 @@ interface PersonRepositoryInterface
      * @return LengthAwarePaginator
      */
     public function findAll(PersonEntity $personEntity = null, string $sortBy = 'name', string $orientation = 'asc'): LengthAwarePaginator;
-
-    /**
-     * @param PersonEntity|null $personEntity
-     * @param string $sortBy
-     * @param string $orientation
-     * @return Collection
-     */
-    public function findList(PersonEntity $personEntity = null, string $sortBy = 'name', string $orientation = 'asc'): Collection;
 }
-
-?>

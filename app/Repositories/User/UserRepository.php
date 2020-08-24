@@ -115,6 +115,21 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param int $person_id
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function findByPersonId(int $person_id): User
+    {
+        try {
+            return $this->user->where('person_id', $person_id)->first();
+        } catch (QueryException | \Throwable $e) {
+            throw new UserNotFoundException($e->getMessage());
+        }
+
+    }
+
+    /**
      * @param UserEntity|null $userEntity
      * @param string $sortBy
      * @param string $orientation

@@ -6,6 +6,8 @@ use App\Repositories\Person\PersonRepository;
 use App\Repositories\Person\PersonRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\WalletTransaction\WalletTransactionRepository;
+use App\Repositories\WalletTransaction\WalletTransactionRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(PersonRepositoryInterface::class, PersonRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(WalletTransactionRepositoryInterface::class, WalletTransactionRepository::class);
     }
 
     /**
