@@ -2,7 +2,7 @@ version: '2'
 services:
     nginx:
         image: nginx:alpine
-        container_name: still-delivery-back-nginx
+        container_name: payme-back-nginx
         restart: always
         ports:
             - "8000:80"
@@ -13,24 +13,24 @@ services:
         links:
             - php
         networks:
-            - still-delivery-back
+            - payme-back
     php:
-        container_name: still-delivery-back-php
+        container_name: payme-back-php
         image: php:7.4-fpm-alpine
         user: "${uid}:${gid}"
         build: ./.devops/fpm
         environment:
-            APP_NAME: still-delivery-back
+            APP_NAME: payme-back
             APP_ENV: local
             APP_KEY: base64:rZkvdPk8OVsPQm//v1wiTnoomHPyqBwEFtj2AsuwHHM=
             APP_DEBUG: "true"
-            APP_URL: http://still-delivery-back.local
+            APP_URL: http://payme-back.local
             PSYSH_CONFIG: /var/www/html/.devops/psysh/config.php
             DB_CONNECTION: pgsql
             DB_HOST: postgres
             DB_PORT: 5432
-            DB_DATABASE: stilldelivery
-            DB_USERNAME: stilldelivery
+            DB_DATABASE: payme
+            DB_USERNAME: payme
             DB_PASSWORD: 12345
 
         volumes:
@@ -40,26 +40,26 @@ services:
         links:
             - postgres
         networks:
-            - still-delivery-back
+            - payme-back
 
     postgres:
         image: postgres
-        container_name: still-delivery-back-postgres
+        container_name: payme-back-postgres
         ports:
             - "15432:5432"
         volumes:
-            - still-delivery-back-postgres:/var/lib/postgresql/data
+            - payme-back-postgres:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: stilldelivery
+            POSTGRES_USER: payme
             POSTGRES_PASSWORD: 12345
-            POSTGRES_DB: stilldelivery
+            POSTGRES_DB: payme
         networks:
-            - still-delivery-back
+            - payme-back
 
 networks:
-    still-delivery-back:
+    payme-back:
         driver: bridge
 
 volumes:
-    still-delivery-back-postgres:
+    payme-back-postgres:
         driver: local

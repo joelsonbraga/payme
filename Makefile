@@ -7,7 +7,7 @@ prepare:
 	@docker run --rm --interactive --tty --volume $$PWD:/app --volume $${COMPOSER_HOME:-$$HOME/.composer-cache}:/tmp --user $$(id -u):$$(id -g) composer install
 	@chmod -R 777 storage
 	@chmod -R 777 bootstrap/cache
-	@docker exec -it still-delivery-back-php php artisan migrate:fresh
+	@docker exec -it payme-back-php php artisan migrate:fresh
 build:
 	@uid=$$uid gid=$$gid docker-compose build
 up:
@@ -17,17 +17,17 @@ stop:
 down:
 	@uid=$$uid gid=$$gid docker-compose down
 console:
-	@docker exec -it still-delivery-back-php bash
+	@docker exec -it payme-back-php bash
 php:
-	@docker exec -it still-delivery-back-php php $(filter-out $@,$(MAKECMDGOALS))
+	@docker exec -it payme-back-php php $(filter-out $@,$(MAKECMDGOALS))
 test:
-	@docker exec -it still-delivery-back-php vendor/bin/phpunit  --verbose tests/
+	@docker exec -it payme-back-php vendor/bin/phpunit  --verbose tests/
 testAction:
-	@docker exec still-delivery-back-php bash -c "/var/www/html/vendor/bin/phpunit  --verbose /var/www/html/tests/"
+	@docker exec payme-back-php bash -c "/var/www/html/vendor/bin/phpunit  --verbose /var/www/html/tests/"
 analyse:
-	@docker exec -it still-delivery-back-php vendor/bin/phpstan analyse
+	@docker exec -it payme-back-php vendor/bin/phpstan analyse
 insights:
-	@docker exec -it still-delivery-back-php php artisan insights
+	@docker exec -it payme-back-php php artisan insights
 composer:
 	@mkdir -p $$HOME/.composer-cache
 	@docker run --rm --interactive --tty --volume $$PWD:/app --volume $${COMPOSER_HOME:-$$HOME/.composer-cache}:/tmp --user $$(id -u):$$(id -g) composer $(filter-out $@,$(MAKECMDGOALS))
