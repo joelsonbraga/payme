@@ -69,7 +69,7 @@ class UserController extends Controller
     public function show(string $uuid)
     {
         try {
-            $categoryProduct = $this->userRepository->findById($uuid);
+            $categoryProduct = $this->userRepository->findByUuid($uuid);
 
             return response()->json(new UserResource($categoryProduct));
         } catch (UserNotFoundException $e) {

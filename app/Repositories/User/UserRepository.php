@@ -69,7 +69,7 @@ class UserRepository implements UserRepositoryInterface
     {
         try {
 
-            $user = $this->findById($userEntity->getUuid());
+            $user = $this->findByUuid($userEntity->getUuid());
 
             $user->person_id = $userEntity->getPersonId();
             $user->name      = $userEntity->getName();
@@ -104,7 +104,7 @@ class UserRepository implements UserRepositoryInterface
      * @param string $uuid
      * @return User
      */
-    public function findById(string $uuid): User
+    public function findByUuid(string $uuid): User
     {
         try {
             return $this->user->where('uuid', $uuid)->first();
@@ -162,7 +162,4 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
-
 }
-
-?>

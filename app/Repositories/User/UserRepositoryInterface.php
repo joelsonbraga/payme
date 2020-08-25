@@ -34,7 +34,7 @@ interface UserRepositoryInterface
      * @param string $uuid
      * @return User
      */
-    public function findById(string $uuid): User;
+    public function findByUuid(string $uuid): User;
 
     /**
      * @param int $person_id

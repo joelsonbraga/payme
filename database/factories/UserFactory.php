@@ -17,12 +17,15 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(\App\Models\User::class, function (Faker $faker) {
+    $person = factory(\App\Models\Person::class)->create();
+
     return [
-        'person_id' => 1,
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
+        'uuid' => $faker->unique()->uuid,
+        'person_id' => $person->id,
+        'name' => $person->name,
+        'email' => $person->email,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password' => \Illuminate\Support\Facades\Hash::make('password'),
         'remember_token' => Str::random(10),
     ];
 });
